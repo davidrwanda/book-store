@@ -15,17 +15,27 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookService = void 0;
 const book_store_1 = __importDefault(require("../model/book_store"));
+const store_1 = __importDefault(require("../model/store"));
+const Logging_1 = __importDefault(require("../helpers/Logging"));
 let store = new book_store_1.default();
 class BookService {
 }
 exports.BookService = BookService;
 _a = BookService;
-BookService.createBook = (book) => {
-    return store.addBook(book);
-};
-BookService.getBooks = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield store.getBooks();
+BookService.createBook = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield store_1.default.create(req.body);
 });
-BookService.deleteBook = (name) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield store.deleteBook(name);
+BookService.getbook = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield store_1.default.findById(req.query.id);
+});
+BookService.getBooks = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield store_1.default.find((err) => {
+        err ? Logging_1.default.err(err) : Logging_1.default.info("successfull loaded books");
+    }).clone().catch((err) => { Logging_1.default.err(err); });
+});
+BookService.updateBook = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield store_1.default.findByIdAndUpdate(req.query.id, req.body);
+});
+BookService.deleteBook = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield store_1.default.findByIdAndDelete(req.query.id);
 });

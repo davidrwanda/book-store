@@ -1,11 +1,15 @@
 export class Book
 {
+    private id: number | undefined;
     private name: string | undefined
     private author: String | undefined
     private year: number | undefined
     private publisher: string | undefined
     private page: number | undefined
 
+    getId(): number | undefined {
+        return this.id
+    }
     getName(): string | undefined{
         return this.name
     }
@@ -22,6 +26,9 @@ export class Book
         return this.page
     }
 
+    setId(id:number){
+        this.id = id
+    }
     setName(name:string){
         this.name = name
     }
@@ -54,15 +61,16 @@ export class Book
 }
 
 export class BookBuilder {
+    private id: number|undefined
     private name: string | undefined
     private author: String | undefined
     private year: number | undefined
     private publisher: string | undefined
     private page: number | undefined
 
-    constructor(name:string, author:String | undefined){
+    constructor(id: number|undefined, name: string){
+        this.id = id
         this.name = name
-        this.author = author
     }
     setName(name:string):BookBuilder{
         this.name = name

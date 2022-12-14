@@ -8,33 +8,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookController = void 0;
-const book_1 = require("../model/book");
 const BookServices_1 = require("../services/BookServices");
-let title = "Hello World";
-let author = "John doe";
-let page = 20;
-let year = 2020;
-let publisher = "David";
+const Response_1 = __importDefault(require("../helpers/Response"));
+const httpStatus = require("http-status");
+const catchAsyncError_1 = __importDefault(require("../helpers/catchAsyncError"));
+const Logging_1 = __importDefault(require("../helpers/Logging"));
 class BookController {
 }
 exports.BookController = BookController;
 _a = BookController;
-BookController.createBook = () => {
-    let bookBuilder = new book_1.BookBuilder(title, author);
-    bookBuilder.setPage(page);
-    bookBuilder.setPublisher(publisher);
-    bookBuilder.setYear(year);
-    let book = new book_1.Book(bookBuilder);
-    let createBook = BookServices_1.BookService.createBook(book);
-    console.log(createBook.getName());
-    console.log(createBook.getAuthor());
-    console.log(createBook.getPage());
-    console.log(createBook.getPublisher());
-    console.log(createBook.getYear());
-};
-BookController.getAllBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-});
+BookController.createBook = (0, catchAsyncError_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield BookServices_1.BookService.createBook(req);
+    if (book)
+        Response_1.default.success(res, book, "success", httpStatus.CREATED);
+    else
+        Response_1.default.fail(res, "error", httpStatus.NOT_ACCEPTABLE);
+}));
+BookController.getbook = (0, catchAsyncError_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield BookServices_1.BookService.getbook(req);
+    Logging_1.default.warning(req.query.id);
+    book ? Response_1.default.success(res, book, "success", httpStatus.OK) : Response_1.default.fail(res, "Failed to get book", httpStatus.NOT_FOUND);
+}));
+BookController.getAllBooks = (0, catchAsyncError_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const books = yield BookServices_1.BookService.getBooks(req);
+    books ? Response_1.default.success(res, books, "success", httpStatus.OK) : Response_1.default.fail(res, "Failed to get books", httpStatus.NOT_FOUND);
+}));
+BookController.updateBook = (0, catchAsyncError_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield BookServices_1.BookService.updateBook(req);
+    book ? Response_1.default.success(res, book, "updated successfull", httpStatus.OK) : Response_1.default.fail(res, "Failed to update", httpStatus.NOT_FOUND);
+}));
+BookController.deleteBook = (0, catchAsyncError_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    let book = yield BookServices_1.BookService.deleteBook(req);
+    book ? Response_1.default.success(res, book, "Deleted", httpStatus.OK) : Response_1.default.fail(res, "Failed to delete book", httpStatus.NOT_FOUND);
+}));
 exports.default = BookController;

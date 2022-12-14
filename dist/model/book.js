@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookBuilder = exports.Book = void 0;
 class Book {
+    getId() {
+        return this.id;
+    }
     getName() {
         return this.name;
     }
@@ -16,6 +19,9 @@ class Book {
     }
     getPage() {
         return this.page;
+    }
+    setId(id) {
+        this.id = id;
     }
     setName(name) {
         this.name = name;
@@ -42,9 +48,9 @@ class Book {
 }
 exports.Book = Book;
 class BookBuilder {
-    constructor(name, author) {
+    constructor(id, name) {
+        this.id = id;
         this.name = name;
-        this.author = author;
     }
     setName(name) {
         this.name = name;

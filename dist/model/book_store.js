@@ -8,34 +8,15 @@ class bookStore {
         this.books.push(book);
         return book;
     }
-    getBookByName(name) {
-        this.books.forEach(element => {
-            if (element.getName() === name)
-                return element;
-        });
-        return undefined;
-    }
     getBooks() {
         return this.books;
     }
-    updateBookName(book, name, title) {
-        this.books.forEach(element => {
-            if (element.getName() === name)
-                element.setName(title);
-            return true;
-        });
-        return false;
+    updateBook(id, book) {
+        let b = this.books[this.books.findIndex(book => book.getId() === id)] = book;
+        return b;
     }
-    updateBookAuthor(book, author, title) {
-        this.books.forEach(element => {
-            if (element.getName() === title)
-                element.setAuthor(author);
-            return true;
-        });
-        return false;
-    }
-    deleteBook(name) {
-        if (this.books.slice(this.books.findIndex(book => book.getName() === name, 1)))
+    deleteBook(id) {
+        if (this.books.slice(this.books.findIndex(book => book.getId() === id, 1)))
             return true;
         return false;
     }
